@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMVVMLogin.RegistrationPage"
+             xmlns:vm="clr-namespace:MauiMVVMLogin.Models.ViewModels"
+             xmlns:models="clr-namespace:MauiMVVMLogin.Models"
+             x:DataType="vm:RegistrationViewModels"
+             x:Name="RegistrationPageObj"
+             Title="Registration">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="15" >
+                
+                <Button x:Name="BtnCapture" Text="Capture" Command="{Binding CapturePhotoCommand}"></Button>
+                
+                <Button x:Name="BtnBrowse" Text="Browse" Command="{Binding BrowsePhotoCommand}"></Button>
+
+                <Image x:Name="myImage" HeightRequest="250" WidthRequest="250" Source="{Binding ImgSource, TargetNullValue='man.png'}" ></Image>
+
+                <Label Text="Fill All Information" FontSize="Small" FontAttributes="Bold"></Label>
+
+                <Entry  Placeholder="Name"  TextColor="Black" x:Name="TxtName" x:FieldModifier="public" Text="{Binding User.Name}"></Entry>
+
+                <DatePicker x:Name="dp" MaximumDate="2050/01/01" Date="{Binding User.DOB}" x:FieldModifier="public" MinimumDate="1925/01/01" Format="dd/MM/yyyy"></DatePicker>
+
+                <Entry Placeholder="Place of birth" TextColor="Black" Text="{Binding User.POB}" x:FieldModifier="public" x:Name="TxtPlace"></Entry>
+
+                <Entry Placeholder="Email-Id"  Keyboard="Email" TextColor="Black" Text="{Binding User.Email}" x:Name="TxtEmail"></Entry>
+
+                <Entry Placeholder="User Id" TextColor="Black" Text="{Binding User.UserId}" x:Name="TxtUserId"></Entry>
+
+                <Entry Placeholder="Password" TextColor="Black" Text="{Binding User.Password}"  x:Name="TxtPassword" IsPassword="True"></Entry>
+
+                <Button  HorizontalOptions="FillAndExpand" Text="{Binding BtnContent}"
+                        Command="{Binding AddUserCommand}"
+            BackgroundColor="Maroon" TextColor="White" Margin="0,10,0,0" x:Name="SaveBtn">
+                    
+                </Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

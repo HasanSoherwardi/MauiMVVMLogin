@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMVVMLogin.MainPage" 
+             xmlns:vm="clr-namespace:MauiMVVMLogin.Models.ViewModels"
+             xmlns:models="clr-namespace:MauiMVVMLogin.Models"
+             x:DataType="vm:MainPageViewModel"
+             Title="Advance Login Form">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="15" >
+                <Entry Placeholder="User Id" Text="{Binding User.UserId}" TextColor="Black" x:Name="UName"></Entry>
+                <Entry Placeholder="Password" Text="{Binding User.Password}" TextColor="Black" x:Name="Password" IsPassword="True"></Entry>
+                <Button Text="Login" HorizontalOptions="FillAndExpand" 
+          TextColor="White" Margin="0,10,0,0" Command="{Binding LoginUserCommand}" x:Name="SaveBtn"></Button>
+                <Button x:Name="btnRegistration" Text="Registration" HorizontalOptions="FillAndExpand"
+          BackgroundColor="Orange" TextColor="Black" Command="{Binding UserRegistrationCommand}"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

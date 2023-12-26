@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:MauiMVVMLogin.Models.ViewModels"
+             xmlns:models="clr-namespace:MauiMVVMLogin.Models"
+             x:DataType="vm:HomeViewModels"
+             android:TabbedPage.ToolbarPlacement="Bottom"
+              x:Class="MauiMVVMLogin.Home">
+
+    
+    <ContentPage Title="Home" IconImageSource="Home.png">
+        <ContentPage.Content>
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <Label Text="Welcome to Advance Login Form" FontSize="Medium"></Label>
+            </StackLayout>
+        </ContentPage.Content>
+    </ContentPage>
+
+    <ContentPage Title="User Info" IconImageSource="user.png">
+
+        <ContentPage.Resources>
+            <ResourceDictionary>
+                <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            </ResourceDictionary>
+        </ContentPage.Resources>
+
+        <ContentPage.Content>
+            <ScrollView>
+                <StackLayout Padding="2" >
+                    
+                    <ListView x:Name="EmployeeList" SelectionMode="Single" HasUnevenRows="True" 
+                              ItemsSource="{Binding Users}" IsPullToRefreshEnabled="True" Refreshing="EmployeeList_Refreshing">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type models:User}">
+                                <ViewCell>
+                                    <StackLayout Padding="2" Orientation="Horizontal">
+
+                                        <Grid BackgroundColor="White" WidthRequest="150" HeightRequest="150">
+                                            <Image x:Name="myImage"  Source="{Binding myArray, TargetNullValue='man.png',  Mode=OneWay, Converter={StaticResource ByteArrayToImageSourceConverter}}" />
+                                        </Grid>
+
+                                        <StackLayout Orientation="Vertical" Padding="2" Spacing="2">
+                                            <Label Text="{Binding Name, StringFormat='{0:F0}'}"  FontSize="Medium" FontAttributes="Bold"></Label>
+                                            <Label Text="{Binding DOB, StringFormat='{0:d}'}"  FontSize="Medium" FontAttributes="None"></Label>
+                                            <Label Text="{Binding POB, StringFormat='{0:F0}'}"  FontSize="Medium" FontAttributes="None"></Label>
+                                            <Label Text="{Binding Email, StringFormat='{0:F0}'}" FontSize="Medium" FontAttributes="None"></Label>
+                                            <StackLayout Orientation="Horizontal" Padding="2" Spacing="2" x:DataType="{x:Type vm:HomeViewModels}">
+                                                <Button Text="Edit" x:Name="BtnEdit" Command="{Binding Source={x:Reference EmployeeList}, Path=BindingContext.EditUser}" CommandParameter="{Binding .}"  BackgroundColor="Green" ></Button>
+                                                <Button Text="Delete" x:Name="BtnDelete" Command="{Binding Source={x:Reference EmployeeList}, Path=BindingContext.DeleteUser}" CommandParameter="{Binding .}" BackgroundColor="Red" ></Button>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
+        </ContentPage.Content>
+    </ContentPage>
+</TabbedPage>
