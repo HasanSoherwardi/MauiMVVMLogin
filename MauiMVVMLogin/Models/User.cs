@@ -1,7 +1,5 @@
 ﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace MauiMVVMLogin.Models
 {
@@ -9,22 +7,23 @@ namespace MauiMVVMLogin.Models
     {
         [PrimaryKey, AutoIncrement]
         public int id { get; set; }
-        [NotNull]
+        [Required(ErrorMessage = "Name is Required")]
         public string Name { get; set; }
-        [NotNull]
-        public DateTime DOB { get; set; }
-        [NotNull]
+        [Required(ErrorMessage = "Date of Birth is Required")]
+        public DateTime DOB { get; set; } = DateTime.Today;
+        [Required(ErrorMessage = "Place of Birth is Required")]
         public string POB { get; set; }
-        [NotNull]
+        [Required(ErrorMessage = "Email Id is Required")]
+        [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", ErrorMessage = "Invalid Email Id")]
         public string Email { get; set; }
-        [NotNull]
+        [Required(ErrorMessage = "UserId is Required")]
         [Unique]
         public string UserId { get; set; }
-        [NotNull]
+        [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; }
 
         public byte[] myArray { get; set; }
 
-        
+
     }
 }

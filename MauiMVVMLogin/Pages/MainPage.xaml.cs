@@ -1,6 +1,5 @@
-﻿using MauiMVVMLogin.Models;
+﻿
 using MauiMVVMLogin.Models.ViewModels;
-using MauiMVVMLogin.Services;
 
 namespace MauiMVVMLogin
 {

@@ -1,19 +1,8 @@
 ﻿using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiMVVMLogin.Helper;
 using MauiMVVMLogin.Services;
-using Microsoft.Maui.Controls;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Xml.Linq;
 
 namespace MauiMVVMLogin.Models.ViewModels
 {
@@ -21,7 +10,12 @@ namespace MauiMVVMLogin.Models.ViewModels
     {
         [ObservableProperty]
         private User user = new User();
-        
+
+        private string flag = null;
+
+        [ObservableProperty]
+        Page window = new();
+
         [ObservableProperty]
         private string btnContent = "Save";
         
@@ -34,71 +28,57 @@ namespace MauiMVVMLogin.Models.ViewModels
             Initialize().SafeFireAndForget();
         }
 
+        private async Task InputValidationAsync()
+        {
+            if (Window != null)
+            {
+                if (!ValidationHelper.IsFormValid(this.User, Window)) { return; }
+                flag = "Success";
+            }
+        }
+
         [RelayCommand]
         private async void AddUser()
         {
             try
             {
-                if (string.IsNullOrEmpty(User.Name))
+                await InputValidationAsync();
+
+                if (flag == "Success")
                 {
-                    await App.Current.MainPage.DisplayAlert("Input Error", "Name is Required", "OK");
-                    return;
-                }
-                if (string.IsNullOrEmpty(User.POB))
-                {
-                    await App.Current.MainPage.DisplayAlert("Input Error", "Place of Birth is Required", "OK");
-                    return;
-                }
-                if (string.IsNullOrEmpty(User.Email))
-                {
-                    await App.Current.MainPage.DisplayAlert("Input Error", "Email is Required", "OK");
-                    return;
-                }
-                bool bEmail;
-                bEmail = Regex.IsMatch(User.Email, @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
-                if (bEmail == false)
-                {
-                    await App.Current.MainPage.DisplayAlert("Input Error", "Invalid Email Address.", "OK");
-                    return;
-                }
-                if (string.IsNullOrEmpty(User.UserId))
-                {
-                    await App.Current.MainPage.DisplayAlert("Input Error", "UserId is Required", "OK");
-                    return;
-                }
-                if (string.IsNullOrEmpty(User.Password))
-                {
-                    await App.Current.MainPage.DisplayAlert("Input Error", "Password is Required", "OK");
-                    return;
-                }
-                if (BtnContent == "Save")
-                {
-                    SQLite_Android Obj = new SQLite_Android();
-                    bool response = Obj.SaveUser(User);
-                    if (response)
+                    if (BtnContent == "Save")
                     {
-                        await App.Current.MainPage.DisplayAlert("Saved", "Save Successfully.", "OK");
-                        await App.Current.MainPage.Navigation.PopAsync();
+                        SQLite_Android Obj = new SQLite_Android();
+                        bool response = Obj.SaveUser(User);
+                        if (response)
+                        {
+                            await App.Current.MainPage.DisplayAlert("Saved", "Save Successfully.", "OK");
+                            await App.Current.MainPage.Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            await App.Current.MainPage.DisplayAlert("Error", "Not Save. Try with different User Id.", "OK");
+                        }
                     }
                     else
                     {
-                        await App.Current.MainPage.DisplayAlert("Error", "Not Save. Try with different User Id.", "OK");
+                        SQLite_Android Obj = new SQLite_Android();
+                        bool response = Obj.UpdateUser(User);
+                        if (response)
+                        {
+                            MessagingCenter.Send<User>(User, "ReciveData");
+                            await App.Current.MainPage.DisplayAlert("Update", "Update Successfully.", "OK");
+                            await App.Current.MainPage.Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            await App.Current.MainPage.DisplayAlert("Error", "Not Save. Try with different User Id.", "OK");
+                        }
                     }
                 }
                 else
                 {
-                    SQLite_Android Obj = new SQLite_Android();
-                    bool response = Obj.UpdateUser(User);
-                    if (response)
-                    {
-                        MessagingCenter.Send<User>(User, "ReciveData");
-                        await App.Current.MainPage.DisplayAlert("Update", "Update Successfully.", "OK");
-                        await App.Current.MainPage.Navigation.PopAsync();
-                    }
-                    else
-                    {
-                        await App.Current.MainPage.DisplayAlert("Error", "Not Save. Try with different User Id.", "OK");
-                    }
+                    return;
                 }
             }
             catch (Exception ex)
@@ -111,18 +91,13 @@ namespace MauiMVVMLogin.Models.ViewModels
         {
             if (User.id > 0)
             {
-                if (User.myArray == null)
-                {
-                    BtnContent = "Update";
-                    App.Current.MainPage.Title = "Edit Info";
-                }
-                else
+                if (User.myArray != null)
                 {
                     MemoryStream streamRead = new MemoryStream(User.myArray.ToArray());
                     ImgSource = ImageSource.FromStream(() => { return streamRead; });
-                    BtnContent = "Update";
-                    App.Current.MainPage.Title = "Edit Info";
                 }
+                BtnContent = "Update";
+                App.Current.MainPage.Title = "Edit Info";
             }
             else
             {

@@ -1,10 +1,3 @@
-using System;
-using System.IO;
-using System.Text;
-using static SQLite.SQLite3;
-using System.Xml.Linq;
-using System.Text.RegularExpressions;
-using MauiMVVMLogin.Services;
 using MauiMVVMLogin.Models;
 using MauiMVVMLogin.Models.ViewModels;
 
@@ -19,6 +12,7 @@ public partial class RegistrationPage : ContentPage
         InitializeComponent();
         var Rvm = new RegistrationViewModels(UserDetails);
         BindingContext = Rvm;
+        Rvm.Window = this;
         Initialize();
     }
     public async void Initialize()

@@ -5,7 +5,6 @@
              xmlns:vm="clr-namespace:MauiMVVMLogin.Models.ViewModels"
              xmlns:models="clr-namespace:MauiMVVMLogin.Models"
              x:DataType="vm:RegistrationViewModels"
-             x:Name="RegistrationPageObj"
              Title="Registration">
     <ContentPage.Content>
         <ScrollView>
@@ -19,18 +18,24 @@
 
                 <Label Text="Fill All Information" FontSize="Small" FontAttributes="Bold"></Label>
 
-                <Entry  Placeholder="Name"  TextColor="Black" x:Name="TxtName" x:FieldModifier="public" Text="{Binding User.Name}"></Entry>
-
-                <DatePicker x:Name="dp" MaximumDate="2050/01/01" Date="{Binding User.DOB}" x:FieldModifier="public" MinimumDate="1925/01/01" Format="dd/MM/yyyy"></DatePicker>
-
-                <Entry Placeholder="Place of birth" TextColor="Black" Text="{Binding User.POB}" x:FieldModifier="public" x:Name="TxtPlace"></Entry>
-
+                <Entry  Placeholder="Name"  TextColor="Black" x:Name="TxtName" Text="{Binding User.Name}"></Entry>
+                <Label x:Name="User_NameError" IsVisible="False" TextColor="Red" />
+                
+                <DatePicker x:Name="dp" MaximumDate="2050/01/01" Date="{Binding User.DOB}" MinimumDate="1925/01/01" Format="dd/MM/yyyy"></DatePicker>
+                <Label x:Name="User_dpError" IsVisible="False" TextColor="Red" />
+                
+                <Entry Placeholder="Place of birth" TextColor="Black" Text="{Binding User.POB}" x:Name="TxtPlace"></Entry>
+                <Label x:Name="User_POBError" IsVisible="False" TextColor="Red" />
+                
                 <Entry Placeholder="Email-Id"  Keyboard="Email" TextColor="Black" Text="{Binding User.Email}" x:Name="TxtEmail"></Entry>
-
+                <Label x:Name="User_EmailError" IsVisible="False" TextColor="Red" />
+                
                 <Entry Placeholder="User Id" TextColor="Black" Text="{Binding User.UserId}" x:Name="TxtUserId"></Entry>
-
+                <Label x:Name="User_UserIdError" IsVisible="False" TextColor="Red" />
+                
                 <Entry Placeholder="Password" TextColor="Black" Text="{Binding User.Password}"  x:Name="TxtPassword" IsPassword="True"></Entry>
-
+                <Label x:Name="User_PasswordError" IsVisible="False" TextColor="Red" />
+                
                 <Button  HorizontalOptions="FillAndExpand" Text="{Binding BtnContent}"
                         Command="{Binding AddUserCommand}"
             BackgroundColor="Maroon" TextColor="White" Margin="0,10,0,0" x:Name="SaveBtn">

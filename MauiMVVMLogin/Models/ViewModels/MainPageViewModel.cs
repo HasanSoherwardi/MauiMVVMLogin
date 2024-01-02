@@ -2,13 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiMVVMLogin.Services;
-using Microsoft.Maui.Controls;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MauiMVVMLogin.Models.ViewModels
 {
@@ -23,13 +16,13 @@ namespace MauiMVVMLogin.Models.ViewModels
         [RelayCommand]
         private async Task LoginUser()
         {
-            if (string.IsNullOrEmpty(User.UserId.ToString()))
+            if (User.UserId == null || string.IsNullOrEmpty(User.UserId.ToString()))
             {
                 await App.Current.MainPage.DisplayAlert("Input Error", "Please enter user name!!!", "OK");
                 //UName.Focus();
                 return;
             }
-            if (string.IsNullOrEmpty(User.Password.ToString()))
+            if (User.Password == null || string.IsNullOrEmpty(User.Password.ToString()))
             {
                 await App.Current.MainPage.DisplayAlert("Input Error", "Please enter password!!!", "OK");
                 //Password.Focus();
@@ -48,7 +41,7 @@ namespace MauiMVVMLogin.Models.ViewModels
             else
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Invalid Credentials", "OK");
-            }
+            }        
         }
 
         [RelayCommand]

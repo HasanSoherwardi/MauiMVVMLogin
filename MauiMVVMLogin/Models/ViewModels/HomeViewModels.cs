@@ -2,12 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiMVVMLogin.Services;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MauiMVVMLogin.Models.ViewModels
@@ -16,15 +10,12 @@ namespace MauiMVVMLogin.Models.ViewModels
     {
         //private ObservableCollection<User> usersCollection = new ObservableCollection<User>(users);
 
-
         [ObservableProperty]
         private User user = new();
 
         [ObservableProperty]
         private List<User> users = new List<User>();
 
-        [ObservableProperty]
-        private string btnContent = "Save";
         [ObservableProperty]
         private Microsoft.Maui.Controls.ImageSource imgSource = ImageSource.FromFile("man.png");
 
@@ -76,7 +67,7 @@ namespace MauiMVVMLogin.Models.ViewModels
                         {
                             await App.Current.MainPage.DisplayAlert("Error", "Deletion Failed.", "OK");
                         }
-                        break;
+                    break;
                 }
             }
         }
